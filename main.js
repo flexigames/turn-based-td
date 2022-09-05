@@ -1,7 +1,7 @@
 import kaboom from 'kaboom';
 import { CELL_COUNT, CELL_SIZE } from './src/cell';
 import { spawnEnemy } from './src/enemy';
-import { drawGrid } from './src/grid';
+import { addGrid } from './src/grid';
 import { getPlayer } from './src/helpers';
 import createMenu from './src/menu';
 import createPlayer from './src/player';
@@ -17,11 +17,9 @@ kaboom({
   background: [0, 0, 0],
 });
 
-loadSprites();
+addGrid();
 
-onDraw(() => {
-  drawGrid();
-});
+loadSprites();
 
 createMenu();
 

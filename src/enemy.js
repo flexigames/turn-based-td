@@ -44,6 +44,7 @@ export function spawnEnemy(x, y) {
         this.color = RED
         wait(0.2, () => {
           this.destroy();
+          getPlayer().gainXp()
         });
       },
       endTurn() {

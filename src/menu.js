@@ -22,4 +22,18 @@ export default function createMenu() {
       },
     },
   ]);
+
+  add([
+    'xp-ui',
+    pos(width() - 192, TOTAL_GRID_SIZE + 36),
+    origin('topright'),
+    text('', { font: 'sink', size: 24 }),
+    {
+      update() {
+        const xp = getPlayer().xp;
+        const levelCap = getPlayer().LEVEL_CAP;
+        this.text = `xp: ${xp}/${levelCap}`;
+      },
+    },
+  ]);
 }
