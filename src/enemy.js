@@ -1,4 +1,5 @@
 import { cellPos, cellPosToPixel, cellSprite, isCellOccupied } from './cell';
+import { getPlayer } from './helpers';
 
 export function spawnEnemy(x, y) {
   return add([
@@ -16,16 +17,24 @@ export function spawnEnemy(x, y) {
         player.takeDamage();
         this.destroy();
       },
-      turn(player) {
+      takeTurn() {
+        const player = getPlayer();
         const { x: playerX, y: playerY } = player.cell;
-        if (this.cell.x < playerX)
-          this.moveToCell(this.cell.x + 1, this.cell.y);
-        else if (this.cell.x > playerX)
-          this.moveToCell(this.cell.x - 1, this.cell.y);
-        else if (this.cell.y < playerY)
-          this.moveToCell(this.cell.x, this.cell.y + 1);
-        else if (this.cell.y > playerY)
-          this.moveToCell(this.cell.x, this.cell.y - 1);
+
+        const distanceX = this.cell.x - playerX;
+        const distanceY = this.cell.y - playerY;
+
+        if (Math.abs(distanceX) > Math.abs(distanceY)) {
+          if (this.cell.x < playerX)
+            this.moveToCell(this.cell.x + 1, this.cell.y);
+          else if (this.cell.x > playerX)
+            this.moveToCell(this.cell.x - 1, this.cell.y);
+        } else {
+          if (this.cell.y < playerY)
+            this.moveToCell(this.cell.x, this.cell.y + 1);
+          else if (this.cell.y > playerY)
+            this.moveToCell(this.cell.x, this.cell.y - 1);
+        }
 
         if (this.cell.x === playerX && this.cell.y === playerY) {
           this.damagePlayer(player);

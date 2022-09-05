@@ -18,18 +18,22 @@ kaboom({
 
 loadSprites();
 
-createMenu();
-
 onDraw(() => {
   drawGrid();
 });
 
+createMenu();
+
 spawnEnemy(7, 0);
 spawnEnemy(9, 0);
-const player = createPlayer();
+spawnEnemy(5, 14);
+spawnEnemy(14, 3);
+spawnEnemy(0, 6);
+
+createPlayer();
 
 function endTurn() {
-  get('enemy').forEach((enemy) => enemy.turn(player));
+  get('enemy').forEach((enemy) => enemy.takeTurn());
 }
 
 onKeyPress('e', endTurn);

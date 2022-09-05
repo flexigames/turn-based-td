@@ -7,7 +7,7 @@ export default function createPlayer() {
     cellPos(7, 7),
     health(3),
     {
-      takeDamage(damage = 2) {
+      takeDamage(damage = 1) {
         shake(damage);
         this.hurt(damage);
 

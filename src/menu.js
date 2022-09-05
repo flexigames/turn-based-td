@@ -2,18 +2,17 @@ import { TOTAL_GRID_SIZE } from '../main';
 import { getPlayer } from './helpers';
 
 export default function createMenu() {
-  const endTurnButton = add([
+  add([
     'end-turn-button',
-    area(),
     pos(36, TOTAL_GRID_SIZE + 36),
+    area(),
     text('end turn', { font: 'sink', size: 24 }),
   ]);
 
-  const healthUi = add([
+  add([
     'health-ui',
-    area(),
-    origin('topright'),
     pos(width() - 36, TOTAL_GRID_SIZE + 36),
+    origin('topright'),
     text('', { font: 'sink', size: 24 }),
     {
       update() {
@@ -23,6 +22,4 @@ export default function createMenu() {
       },
     },
   ]);
-
-  return [endTurnButton];
 }
