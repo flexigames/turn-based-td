@@ -37,6 +37,9 @@ export function spawnEnemy(x, y) {
             this.moveToCell(this.cell.x, this.cell.y - 1);
         }
       },
+      takeDamage() {
+        this.destroy();
+      },
     },
   ]);
 }

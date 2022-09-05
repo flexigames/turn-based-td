@@ -2,6 +2,7 @@ import kaboom from 'kaboom';
 import { CELL_COUNT, CELL_SIZE } from './src/cell';
 import { spawnEnemy } from './src/enemy';
 import { drawGrid } from './src/grid';
+import { getPlayer } from './src/helpers';
 import createMenu from './src/menu';
 import createPlayer from './src/player';
 import loadSprites from './src/spritesheet';
@@ -41,7 +42,9 @@ function enemyTurn() {
   get('enemy').forEach((enemy) => enemy.takeTurn());
 }
 
-function playerTurn() {}
+function playerTurn() {
+  getPlayer().takeTurn()
+}
 
 onKeyPress('e', endTurn);
 onClick('end-turn-button', endTurn);

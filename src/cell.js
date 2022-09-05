@@ -18,3 +18,7 @@ export function isCellOccupied(cellObjects, x, y) {
 export function cellPosToPixel(cellPos) {
   return vec2(cellPos.x * CELL_SIZE, cellPos.y * CELL_SIZE);
 }
+
+export function isInRange(pos1, pos2, range) {
+  return pos1.dist(pos2) <= range
+}
