@@ -21,7 +21,7 @@ export default function createPlayer() {
         );
 
         if (enemiesInRange.length > 0) {
-          enemiesInRange[0].takeDamage(this.damage)
+          enemiesInRange[0].takeDamage(this.damage);
         }
       },
     },

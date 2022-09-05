@@ -34,16 +34,18 @@ spawnEnemy(0, 6);
 createPlayer();
 
 function endTurn() {
-  enemyTurn();
-  playerTurn();
-}
+  const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
 
-function enemyTurn() {
-  get('enemy').forEach((enemy) => enemy.takeTurn());
+  if (nextEnemies.length > 0) {
+    nextEnemies[0].takeTurn(endTurn);
+  } else {
+    get('enemy').forEach((enemy) => (enemy.turnTaken = false));
+    playerTurn();
+  }
 }
 
 function playerTurn() {
-  getPlayer().takeTurn()
+  getPlayer().takeTurn();
 }
 
 onKeyPress('e', endTurn);

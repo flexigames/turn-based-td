@@ -7,13 +7,16 @@ export function spawnEnemy(x, y) {
     cellSprite('enemy'),
     cellPos(x, y),
     {
+      turnTaken: false,
+      endTurnCb: null,
       moveToCell(x, y) {
         if (isCellOccupied(get('enemy'), x, y)) return;
 
-        this.moveTo(cellPosToPixel(vec2(x, y)));
         this.cell = vec2(x, y);
       },
-      takeTurn() {
+      takeTurn(endTurnCb) {
+        this.turnTaken = true;
+        this.endTurnCb = endTurnCb;
         const player = getPlayer();
         const { x: playerX, y: playerY } = player.cell;
 
@@ -38,7 +41,28 @@ export function spawnEnemy(x, y) {
         }
       },
       takeDamage() {
-        this.destroy();
+        this.color = RED
+        wait(0.2, () => {
+          this.destroy();
+        });
+      },
+      endTurn() {
+        this.endTurnCb?.();
+        this.endTurnCb = null;
+      },
+      update() {
+        this.moveUpdate();
+      },
+      moveUpdate() {
+        const moveAnmationFinished =
+          this.pos.dist(cellPosToPixel(vec2(this.cell.x, this.cell.y))) === 0 &&
+          this.turnTaken &&
+          this.endTurnCb;
+
+        if (moveAnmationFinished) {
+          this.endTurn();
+        }
+        this.moveTo(cellPosToPixel(vec2(this.cell.x, this.cell.y)), 300);
       },
     },
   ]);
