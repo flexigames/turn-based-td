@@ -1,3 +1,5 @@
+import { sample } from 'lodash';
+
 export const CELL_SIZE = 48;
 export const CELL_COUNT = 15;
 
@@ -31,4 +33,14 @@ export function pixelToCellPos(pos) {
   if (pos.x > GRID_SIZE || pos.y > GRID_SIZE) return;
 
   return vec2(Math.floor(pos.x / CELL_SIZE), Math.floor(pos.y / CELL_SIZE));
+}
+
+export function getRandomBorderCell() {
+  const direction = sample(['TOP', 'LEFT', 'RIGHT', 'BOTTOM']);
+
+  if (direction === 'TOP') return vec2(randi(CELL_COUNT), 0);
+  if (direction === 'LEFT') return vec2(0, randi(randi(CELL_COUNT)));
+  if (direction === 'RIGHT')
+    return vec2(CELL_COUNT - 1, randi(randi(CELL_COUNT)));
+  if (direction === 'BOTTOM') return vec2(randi(CELL_COUNT), CELL_COUNT - 1 );
 }

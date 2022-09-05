@@ -1,7 +1,8 @@
 import { cellPos, cellPosToPixel, cellSprite, isCellOccupied } from './cell';
 import { getPlayer } from './helpers';
 
-export function spawnEnemy(x, y) {
+export function spawnEnemy(cell) {
+  const { x, y } = cell;
   return add([
     'enemy',
     cellSprite('enemy'),
@@ -41,11 +42,11 @@ export function spawnEnemy(x, y) {
         }
       },
       takeDamage() {
-        this.color = RED
+        this.color = RED;
         wait(0.2, () => {
-          if (!this.exists()) return 
+          if (!this.exists()) return;
           this.destroy();
-          getPlayer().gainXp()
+          getPlayer().gainXp();
         });
       },
       endTurn() {

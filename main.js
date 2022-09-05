@@ -5,6 +5,7 @@ import {
   cellSprite,
   CELL_COUNT,
   CELL_SIZE,
+  getRandomBorderCell,
   pixelToCellPos,
 } from './src/cell';
 import { createChoices } from './src/choice';
@@ -32,12 +33,6 @@ loadSprites();
 
 createMenu();
 
-spawnEnemy(7, 0);
-spawnEnemy(9, 0);
-spawnEnemy(5, 14);
-spawnEnemy(14, 3);
-spawnEnemy(0, 6);
-
 createPlayer();
 
 function endTurn() {
@@ -48,6 +43,7 @@ function endTurn() {
   } else {
     get('enemy').forEach((enemy) => (enemy.turnTaken = false));
     playerTurn();
+    spawnEnemy(getRandomBorderCell());
   }
 }
 
