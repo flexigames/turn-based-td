@@ -5,7 +5,7 @@ export default function createPlayer() {
     'player',
     cellSprite('base'),
     cellPos(7, 7),
-    health(3),
+    health(10),
     {
       takeDamage(damage = 1) {
         shake(damage);

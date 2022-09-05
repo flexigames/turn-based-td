@@ -33,8 +33,15 @@ spawnEnemy(0, 6);
 createPlayer();
 
 function endTurn() {
+  enemyTurn();
+  playerTurn();
+}
+
+function enemyTurn() {
   get('enemy').forEach((enemy) => enemy.takeTurn());
 }
+
+function playerTurn() {}
 
 onKeyPress('e', endTurn);
 onClick('end-turn-button', endTurn);

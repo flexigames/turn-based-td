@@ -13,16 +13,17 @@ export function spawnEnemy(x, y) {
         this.moveTo(cellPosToPixel(vec2(x, y)));
         this.cell = vec2(x, y);
       },
-      damagePlayer(player) {
-        player.takeDamage();
-        this.destroy();
-      },
       takeTurn() {
         const player = getPlayer();
         const { x: playerX, y: playerY } = player.cell;
 
         const distanceX = this.cell.x - playerX;
         const distanceY = this.cell.y - playerY;
+
+        if (Math.abs(distanceX) + Math.abs(distanceY) === 1) {
+          player.takeDamage();
+          return;
+        }
 
         if (Math.abs(distanceX) > Math.abs(distanceY)) {
           if (this.cell.x < playerX)
@@ -34,10 +35,6 @@ export function spawnEnemy(x, y) {
             this.moveToCell(this.cell.x, this.cell.y + 1);
           else if (this.cell.y > playerY)
             this.moveToCell(this.cell.x, this.cell.y - 1);
-        }
-
-        if (this.cell.x === playerX && this.cell.y === playerY) {
-          this.damagePlayer(player);
         }
       },
     },
