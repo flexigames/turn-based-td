@@ -1,11 +1,20 @@
 import kaboom from 'kaboom';
-import { CELL_COUNT, CELL_SIZE } from './src/cell';
+import { forEach } from 'lodash';
+import {
+  cellPos,
+  cellSprite,
+  CELL_COUNT,
+  CELL_SIZE,
+  pixelToCellPos,
+} from './src/cell';
+import { createChoices } from './src/choice';
 import { spawnEnemy } from './src/enemy';
 import { addGrid } from './src/grid';
 import { getPlayer } from './src/helpers';
 import createMenu from './src/menu';
 import createPlayer from './src/player';
 import loadSprites from './src/spritesheet';
+import createTower from './src/tower';
 
 export const GRID_OFFSET_Y = 96;
 export const TOTAL_GRID_SIZE = CELL_SIZE * CELL_COUNT;
@@ -44,7 +53,34 @@ function endTurn() {
 
 function playerTurn() {
   getPlayer().takeTurn();
+  get('tower').forEach((tower) => tower.takeTurn());
 }
 
+let state = '';
+
 onKeyPress('e', endTurn);
+onMousePress((mousePos) => {
+  if (state === 'building-tower') {
+    createTower(pixelToCellPos(mousePos));
+    destroyAll('building-indicator');
+    state = '';
+  }
+});
+onMouseMove((mousePos) => {
+  if (state === 'building-tower') {
+    get('building-indicator')[0].pos = vec2(
+      pixelToCellPos(mousePos).x * CELL_SIZE,
+      pixelToCellPos(mousePos).y * CELL_SIZE
+    );
+  }
+});
 onClick('end-turn-button', endTurn);
+
+export function changeState(newState) {
+  if (newState === 'building-tower') {
+    add(['building-indicator', cellSprite('tower'), color(rgb(50, 50, 50))]);
+  }
+  state = newState;
+}
+
+createChoices();

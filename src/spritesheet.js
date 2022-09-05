@@ -3,12 +3,16 @@ import { mapValues } from 'lodash';
 export default function loadSprites() {
   const sprites = {
     base: {
-      x: 3,
+      x: 6,
       y: 19,
     },
     enemy: {
       x: 27,
       y: 0,
+    },
+    tower: {
+      x: 2,
+      y: 19,
     },
   };
 

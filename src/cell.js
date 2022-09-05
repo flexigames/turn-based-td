@@ -2,7 +2,10 @@ export const CELL_SIZE = 48;
 export const CELL_COUNT = 15;
 
 export function cellPos(x, y) {
-  return { ...pos(x * CELL_SIZE, y * CELL_SIZE), cell: vec2(x, y) };
+  return {
+    ...pos(x * CELL_SIZE, y * CELL_SIZE),
+    cell: vec2(x, y),
+  };
 }
 
 export function cellSprite(name, options = {}) {
@@ -20,5 +23,12 @@ export function cellPosToPixel(cellPos) {
 }
 
 export function isInRange(pos1, pos2, range) {
-  return pos1.dist(pos2) <= range
+  return pos1.dist(pos2) <= range;
+}
+
+export function pixelToCellPos(pos) {
+  const GRID_SIZE = CELL_SIZE * CELL_COUNT;
+  if (pos.x > GRID_SIZE || pos.y > GRID_SIZE) return;
+
+  return vec2(Math.floor(pos.x / CELL_SIZE), Math.floor(pos.y / CELL_SIZE));
 }

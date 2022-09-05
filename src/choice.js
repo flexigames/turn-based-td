@@ -1,4 +1,23 @@
+import { sampleSize } from 'lodash';
+import { changeState } from '../main';
 import { getPlayer } from './helpers';
+
+const choices = [
+  {
+    text: '+1hp',
+    effect: () => {
+      getPlayer().heal(1);
+    },
+  },
+  {
+    text: 'tower',
+    effect: () => {
+      changeState('building-tower');
+    },
+  },
+];
+
+let removeOnClickHandler;
 
 export function createChoices() {
   add([
@@ -12,41 +31,32 @@ export function createChoices() {
     outline(16, WHITE),
   ]);
 
-  add([
-    'choice-ui',
-    'choice',
-    pos(width() / 2 - 112, height() / 2),
-    origin('center'),
-    z(101),
-    area(),
-    text('+2hp', { font: 'sink', size: 24 }),
-    {
-      choose() {
-        getPlayer().heal(2);
-        removeChoice();
-      },
-    },
-  ]);
+  const options = sampleSize(choices, 2);
 
-  add([
-    'choice-ui',
-    'choice',
-    pos(width() / 2 + 112, height() / 2),
-    origin('center'),
-    z(101),
-    area(),
-    text('+1hp', { font: 'sink', size: 24 }),
-    {
-      choose() {
-        getPlayer().heal(1);
-        removeChoice();
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    add([
+      'choice-ui',
+      'choice',
+      pos(width() / 2 - 112 + 224 * i, height() / 2),
+      origin('center'),
+      z(101),
+      area(),
+      text(option.text, { font: 'sink', size: 24 }),
+      {
+        choose() {
+          option.effect();
+          removeChoices();
+        },
       },
-    },
-  ]);
+    ]);
+  }
 
-  onClick('choice', (choice) => choice.choose());
+  removeOnClickHandler = onClick('choice', (choice) => choice.choose());
 }
 
-function removeChoice() {
+function removeChoices() {
   destroyAll('choice-ui');
+  removeOnClickHandler?.();
+  removeOnClickHandler = undefined;
 }

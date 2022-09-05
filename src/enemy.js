@@ -43,6 +43,7 @@ export function spawnEnemy(x, y) {
       takeDamage() {
         this.color = RED
         wait(0.2, () => {
+          if (!this.exists()) return 
           this.destroy();
           getPlayer().gainXp()
         });

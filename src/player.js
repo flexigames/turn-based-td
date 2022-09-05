@@ -1,6 +1,6 @@
-import { cellPos, cellSprite, isInRange } from './cell';
+import { cellPos, cellSprite } from './cell';
 import { createChoices } from './choice';
-
+import { attackEnemies } from './helpers';
 
 export default function createPlayer() {
   const player = add([
@@ -8,6 +8,7 @@ export default function createPlayer() {
     cellSprite('base'),
     cellPos(7, 7),
     health(10),
+    attackEnemies(),
     {
       damage: 1,
       range: 1,
@@ -29,15 +30,6 @@ export default function createPlayer() {
       levelUp() {
         this.xp = 0;
         createChoices();
-      },
-      takeTurn() {
-        const enemiesInRange = get('enemy').filter((enemy) =>
-          isInRange(this.cell, enemy.cell, this.range)
-        );
-
-        if (enemiesInRange.length > 0) {
-          enemiesInRange[0].takeDamage(this.damage);
-        }
       },
     },
   ]);
