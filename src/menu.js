@@ -31,7 +31,7 @@ export default function createMenu() {
     {
       update() {
         const xp = getPlayer().xp;
-        const levelCap = getPlayer().LEVEL_CAP;
+        const levelCap = getPlayer().levelCap;
         this.text = `xp: ${xp}/${levelCap}`;
       },
     },

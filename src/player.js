@@ -11,7 +11,7 @@ export default function createPlayer() {
     attackEnemies(),
     {
       xp: 0,
-      LEVEL_CAP: 3,
+      levelCap: 3,
       takeDamage(damage = 1) {
         shake(damage);
         this.hurt(damage);
@@ -21,12 +21,13 @@ export default function createPlayer() {
       gainXp(xp = 1) {
         this.xp += xp;
 
-        if (this.xp >= this.LEVEL_CAP) {
+        if (this.xp >= this.levelCap) {
           this.levelUp();
         }
       },
       levelUp() {
         this.xp = 0;
+        this.levelCap *= 2
         createChoices();
       },
     },

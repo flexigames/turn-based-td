@@ -1,7 +1,5 @@
 import kaboom from 'kaboom';
-import { forEach } from 'lodash';
 import {
-  cellPos,
   cellSprite,
   CELL_COUNT,
   CELL_SIZE,
@@ -13,6 +11,7 @@ import { spawnEnemy } from './src/enemy';
 import { addGrid } from './src/grid';
 import { getPlayer } from './src/helpers';
 import createMenu from './src/menu';
+import createPath from './src/path';
 import createPlayer from './src/player';
 import loadSprites from './src/spritesheet';
 import createTower from './src/tower';
@@ -35,7 +34,9 @@ createMenu();
 
 createPlayer();
 
-spawnEnemy(getRandomBorderCell());
+const path = [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)];
+createPath(path);
+spawnEnemy(path[0]);
 
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
@@ -52,7 +53,7 @@ function endTurn() {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('player').forEach((o) => (o.turnTaken = false));
     get('tower').forEach((o) => (o.turnTaken = false));
-    spawnEnemy(getRandomBorderCell());
+    spawnEnemy(path[0]);
   }
 }
 
@@ -82,5 +83,3 @@ export function changeState(newState) {
   }
   state = newState;
 }
-
-createChoices();
