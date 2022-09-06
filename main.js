@@ -35,21 +35,25 @@ createMenu();
 
 createPlayer();
 
+spawnEnemy(getRandomBorderCell());
+
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
+  const nextTowers = get('tower').filter((tower) => !tower.turnTaken);
+  const player = getPlayer();
 
   if (nextEnemies.length > 0) {
     nextEnemies[0].takeTurn(endTurn);
+  } else if (nextTowers.length > 0) {
+    nextTowers[0].takeTurn(endTurn);
+  } else if (!player.turnTaken) {
+    player.takeTurn(endTurn);
   } else {
-    get('enemy').forEach((enemy) => (enemy.turnTaken = false));
-    playerTurn();
+    get('enemy').forEach((o) => (o.turnTaken = false));
+    get('player').forEach((o) => (o.turnTaken = false));
+    get('tower').forEach((o) => (o.turnTaken = false));
     spawnEnemy(getRandomBorderCell());
   }
-}
-
-function playerTurn() {
-  getPlayer().takeTurn();
-  get('tower').forEach((tower) => tower.takeTurn());
 }
 
 let state = '';

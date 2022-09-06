@@ -10,8 +10,6 @@ export default function createPlayer() {
     health(10),
     attackEnemies(),
     {
-      damage: 1,
-      range: 1,
       xp: 0,
       LEVEL_CAP: 3,
       takeDamage(damage = 1) {

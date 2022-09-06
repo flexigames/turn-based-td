@@ -29,24 +29,28 @@ export function spawnEnemy(cell) {
           return;
         }
 
+        this.moveCloserTo(player.cell);
+      },
+      moveCloserTo({ x, y }) {
+        const distanceX = this.cell.x - x;
+        const distanceY = this.cell.y - y;
         if (Math.abs(distanceX) > Math.abs(distanceY)) {
-          if (this.cell.x < playerX)
-            this.moveToCell(this.cell.x + 1, this.cell.y);
-          else if (this.cell.x > playerX)
+          if (this.cell.x < x) this.moveToCell(this.cell.x + 1, this.cell.y);
+          else if (this.cell.x > x)
             this.moveToCell(this.cell.x - 1, this.cell.y);
         } else {
-          if (this.cell.y < playerY)
-            this.moveToCell(this.cell.x, this.cell.y + 1);
-          else if (this.cell.y > playerY)
+          if (this.cell.y < y) this.moveToCell(this.cell.x, this.cell.y + 1);
+          else if (this.cell.y > y)
             this.moveToCell(this.cell.x, this.cell.y - 1);
         }
       },
-      takeDamage() {
+      takeDamage(damage = 1, cb) {
         this.color = RED;
         wait(0.2, () => {
           if (!this.exists()) return;
           this.destroy();
           getPlayer().gainXp();
+          cb?.();
         });
       },
       endTurn() {
