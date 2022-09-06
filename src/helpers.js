@@ -4,6 +4,10 @@ export function getPlayer() {
   return get('player')[0];
 }
 
+export function getTurn() {
+  return get('game')[0].turn;
+}
+
 export function attackEnemies() {
   return {
     range: 1,
