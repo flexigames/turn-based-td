@@ -46,6 +46,9 @@ createPath(path1);
 createPath(path2);
 spawnEnemy(path1[0], path1);
 
+let turn = 1;
+const spawnRate = 2;
+
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
   const nextTowers = get('tower').filter((tower) => !tower.turnTaken);
@@ -61,8 +64,11 @@ function endTurn() {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('player').forEach((o) => (o.turnTaken = false));
     get('tower').forEach((o) => (o.turnTaken = false));
-    spawnEnemy(path1[0], path1);
-    spawnEnemy(path2[0], path2);
+    if (turn % spawnRate === 0) {
+      spawnEnemy(path1[0], path1);
+      spawnEnemy(path2[0], path2);
+    }
+    turn++;
   }
 }
 
