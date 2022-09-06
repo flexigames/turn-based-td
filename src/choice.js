@@ -43,17 +43,18 @@ export function createChoices() {
     outline(16, WHITE),
   ]);
 
-  const options = sampleSize(choices, 2);
+  const options = sampleSize(choices, 3);
 
   for (let i = 0; i < options.length; i++) {
     const option = options[i];
     add([
       'choice-ui',
       'choice',
-      pos(width() / 2 - 112 + 224 * i, height() / 2),
+      pos(width() / 2, height() / 2 - 48 + 48 * i),
       origin('center'),
       z(101),
       area(),
+      color(WHITE),
       text(option.text, { font: 'sink', size: 16 }),
       {
         choose() {
