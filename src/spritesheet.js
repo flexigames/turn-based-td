@@ -26,6 +26,10 @@ export default function loadSprites() {
       x: 28,
       y: 0,
     },
+    fireball: {
+      x: 28,
+      y: 11
+    }
   };
 
   loadSpriteAtlas(

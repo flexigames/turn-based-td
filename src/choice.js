@@ -27,6 +27,12 @@ const choices = [
       getPlayer().damage += 1;
     },
   },
+  {
+    text: 'fireball',
+    effect: () => {
+      changeState('spell-fireball');
+    },
+  },
 ];
 
 let removeOnClickHandler;

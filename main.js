@@ -1,7 +1,13 @@
 import kaboom from 'kaboom';
 import { sample } from 'lodash';
 import createBarracks from './src/barracks';
-import { cellSprite, CELL_COUNT, CELL_SIZE, pixelToCellPos } from './src/cell';
+import {
+  cellSprite,
+  CELL_COUNT,
+  CELL_SIZE,
+  isInRange,
+  pixelToCellPos,
+} from './src/cell';
 import { createChoices } from './src/choice';
 import { spawnEnemy } from './src/enemy';
 import { addGrid } from './src/grid';
@@ -109,19 +115,31 @@ let state = '';
 onKeyPress('e', endTurn);
 
 onMousePress((mousePos) => {
+  const mouseCell = pixelToCellPos(mousePos);
   if (state.includes('building')) {
     if (state.includes('tower')) {
-      createTower(pixelToCellPos(mousePos));
+      createTower(mouseCell);
     } else if (state.includes('barracks')) {
-      createBarracks(pixelToCellPos(mousePos));
+      createBarracks(mouseCell);
     }
-    destroyAll('building-indicator');
-    state = '';
   }
+  if (state === 'spell-fireball') {
+    get('enemy')
+      .filter(({ cell }) => isInRange(cell, mouseCell, 2))
+      .forEach((enemy) => enemy.takeDamage(10));
+  }
+  destroyAll('indicator');
+
+  state = '';
 });
 onMouseMove((mousePos) => {
   if (state.includes('building')) {
     get('building-indicator')[0].pos = vec2(
+      pixelToCellPos(mousePos).x * CELL_SIZE,
+      pixelToCellPos(mousePos).y * CELL_SIZE
+    );
+  } else if (state === 'spell-fireball') {
+    get('fireball-indicator')[0].pos = vec2(
       pixelToCellPos(mousePos).x * CELL_SIZE,
       pixelToCellPos(mousePos).y * CELL_SIZE
     );
@@ -133,8 +151,16 @@ export function changeState(newState) {
   if (newState.includes('building')) {
     add([
       'building-indicator',
+      'indicator',
       cellSprite(newState.split('-')[1]),
       color(rgb(50, 50, 50)),
+    ]);
+  } else if (newState === 'spell-fireball') {
+    add([
+      'fireball-indicator',
+      'indicator',
+      cellSprite('fireball'),
+      color(rgb(200, 50, 50)),
     ]);
   }
   state = newState;
