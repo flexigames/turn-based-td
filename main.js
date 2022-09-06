@@ -1,4 +1,5 @@
 import kaboom from 'kaboom';
+import { sample } from 'lodash';
 import createBarracks from './src/barracks';
 import { cellSprite, CELL_COUNT, CELL_SIZE, pixelToCellPos } from './src/cell';
 import { createChoices } from './src/choice';
@@ -29,17 +30,16 @@ createMenu();
 
 createPlayer();
 
-const path1 = [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)];
-const path2 = [
-  vec2(14, 12),
-  vec2(14, 10),
-  vec2(10, 10),
-  vec2(10, 7),
-  vec2(7, 7),
+const possiblePaths = [
+  [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)],
+  [vec2(14, 12), vec2(14, 10), vec2(10, 10), vec2(10, 7), vec2(7, 7)],
+  [vec2(3, 14), vec2(7, 14), vec2(7, 8), vec2(7, 7)],
 ];
-createPath(path1);
-createPath(path2);
-spawnEnemy(path1[0], path1);
+
+const pathIndices = [sample(possiblePaths.map((_, i) => i))];
+
+createPath(possiblePaths[pathIndices[0]]);
+spawnEnemy(possiblePaths[pathIndices[0]]);
 
 const game = add([
   'game',
@@ -53,6 +53,7 @@ const game = add([
 
 const spawnRate = 2;
 const bruteSpawnRate = 4;
+const pathSpawnRate = 20;
 
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
@@ -68,23 +69,39 @@ function endTurn() {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('friendly').forEach((o) => (o.turnTaken = false));
     spawnEnemies();
+    spawnPath();
     game.turn++;
   }
 }
 
+function spawnPath() {
+  if (game.turn % pathSpawnRate === 0) {
+    const newPathIndex = sample(
+      possiblePaths
+        .map((_, i) => i)
+        .filter((pathIndex) => !pathIndices.includes(pathIndex))
+    );
+
+    if (newPathIndex !== undefined) {
+      pathIndices.push(newPathIndex);
+      createPath(possiblePaths[newPathIndex]);
+    }
+  }
+}
+
 function spawnEnemies() {
-  if (game.turn > 10 && game.turn % 4 === 0) {
-    spawnEnemy(path1[0], path1, {
-      initialHealth: 6,
-      damage: 2,
-      sprite: 'brute',
-    });
-    return;
-  }
-  if (game.turn % spawnRate === 0) {
-    spawnEnemy(path1[0], path1);
-    spawnEnemy(path2[0], path2);
-  }
+  pathIndices.forEach((pathIndex) => {
+    const path = possiblePaths[pathIndex];
+    if (game.turn > 10 && game.turn % bruteSpawnRate === 0) {
+      spawnEnemy(path, {
+        initialHealth: 6,
+        damage: 2,
+        sprite: 'brute',
+      });
+    } else if (game.turn % spawnRate === 0) {
+      spawnEnemy(path);
+    }
+  });
 }
 
 let state = '';

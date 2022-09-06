@@ -8,11 +8,10 @@ import {
 import { getPlayer } from './helpers';
 
 export function spawnEnemy(
-  cell,
   path,
   { initialHealth = 2, damage = 1, sprite = 'enemy' } = {}
 ) {
-  const { x, y } = cell;
+  const { x, y } = path[0];
   return add([
     'enemy',
     cellSprite(sprite),
