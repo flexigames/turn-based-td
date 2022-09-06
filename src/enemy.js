@@ -7,6 +7,7 @@ export function spawnEnemy(cell, path) {
     'enemy',
     cellSprite('enemy'),
     cellPos(x, y),
+    health(2),
     {
       turnTaken: false,
       endTurnCb: null,
@@ -50,13 +51,19 @@ export function spawnEnemy(cell, path) {
             this.moveToCell(this.cell.x, this.cell.y - 1);
         }
       },
-      takeDamage(damage = 1, cb) {
+      takeDamage(damage = 1, next) {
         this.color = RED;
+        this.hurt(damage);
+
         wait(0.2, () => {
           if (!this.exists()) return;
-          this.destroy();
-          getPlayer().gainXp();
-          cb?.();
+          if (this.hp() <= 0) {
+            this.destroy();
+            getPlayer().gainXp();
+          } else {
+            this.color = WHITE;
+          }
+          next?.();
         });
       },
       endTurn() {
