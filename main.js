@@ -36,7 +36,7 @@ createPlayer();
 
 const path = [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)];
 createPath(path);
-spawnEnemy(path[0]);
+spawnEnemy(path[0], path);
 
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
@@ -53,7 +53,7 @@ function endTurn() {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('player').forEach((o) => (o.turnTaken = false));
     get('tower').forEach((o) => (o.turnTaken = false));
-    spawnEnemy(path[0]);
+    spawnEnemy(path[0], path);
   }
 }
 

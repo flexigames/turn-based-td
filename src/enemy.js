@@ -1,7 +1,7 @@
 import { cellPos, cellPosToPixel, cellSprite, isCellOccupied } from './cell';
 import { getPlayer } from './helpers';
 
-export function spawnEnemy(cell) {
+export function spawnEnemy(cell, path) {
   const { x, y } = cell;
   return add([
     'enemy',
@@ -10,6 +10,8 @@ export function spawnEnemy(cell) {
     {
       turnTaken: false,
       endTurnCb: null,
+      path,
+      nextPathStep: 1,
       moveToCell(x, y) {
         if (isCellOccupied(get('enemy'), x, y)) return;
 
@@ -29,7 +31,11 @@ export function spawnEnemy(cell) {
           return;
         }
 
-        this.moveCloserTo(player.cell);
+        if (this.cell.dist(path[this.nextPathStep]) === 0) {
+          this.nextPathStep++;
+        }
+
+        this.moveCloserTo(path[this.nextPathStep]);
       },
       moveCloserTo({ x, y }) {
         const distanceX = this.cell.x - x;
@@ -69,7 +75,7 @@ export function spawnEnemy(cell) {
         if (moveAnmationFinished) {
           this.endTurn();
         }
-        this.moveTo(cellPosToPixel(vec2(this.cell.x, this.cell.y)), 300);
+        this.moveTo(cellPosToPixel(vec2(this.cell.x, this.cell.y)), 400);
       },
     },
   ]);
