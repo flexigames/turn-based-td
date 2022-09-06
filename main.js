@@ -1,11 +1,6 @@
 import kaboom from 'kaboom';
-import {
-  cellSprite,
-  CELL_COUNT,
-  CELL_SIZE,
-  getRandomBorderCell,
-  pixelToCellPos,
-} from './src/cell';
+import createBarracks from './src/barracks';
+import { cellSprite, CELL_COUNT, CELL_SIZE, pixelToCellPos } from './src/cell';
 import { createChoices } from './src/choice';
 import { spawnEnemy } from './src/enemy';
 import { addGrid } from './src/grid';
@@ -75,15 +70,20 @@ function endTurn() {
 let state = '';
 
 onKeyPress('e', endTurn);
+
 onMousePress((mousePos) => {
-  if (state === 'building-tower') {
-    createTower(pixelToCellPos(mousePos));
+  if (state.includes('building')) {
+    if (state.includes('tower')) {
+      createTower(pixelToCellPos(mousePos));
+    } else if (state.includes('barracks')) {
+      createBarracks(pixelToCellPos(mousePos));
+    }
     destroyAll('building-indicator');
     state = '';
   }
 });
 onMouseMove((mousePos) => {
-  if (state === 'building-tower') {
+  if (state.includes('building')) {
     get('building-indicator')[0].pos = vec2(
       pixelToCellPos(mousePos).x * CELL_SIZE,
       pixelToCellPos(mousePos).y * CELL_SIZE
@@ -93,8 +93,14 @@ onMouseMove((mousePos) => {
 onClick('end-turn-button', endTurn);
 
 export function changeState(newState) {
-  if (newState === 'building-tower') {
-    add(['building-indicator', cellSprite('tower'), color(rgb(50, 50, 50))]);
+  if (newState.includes('building')) {
+    add([
+      'building-indicator',
+      cellSprite(newState.split('-')[1]),
+      color(rgb(50, 50, 50)),
+    ]);
   }
   state = newState;
 }
+
+createChoices();

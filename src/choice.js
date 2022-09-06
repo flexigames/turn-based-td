@@ -4,15 +4,27 @@ import { getPlayer } from './helpers';
 
 const choices = [
   {
-    text: '+1hp',
+    text: '+5hp',
     effect: () => {
-      getPlayer().heal(1);
+      getPlayer().heal(5);
     },
   },
   {
     text: 'tower',
     effect: () => {
       changeState('building-tower');
+    },
+  },
+  {
+    text: 'barracks',
+    effect: () => {
+      changeState('building-barracks');
+    },
+  },
+  {
+    text: '+1dmg (king)',
+    effect: () => {
+      getPlayer().damage += 1;
     },
   },
 ];
@@ -42,7 +54,7 @@ export function createChoices() {
       origin('center'),
       z(101),
       area(),
-      text(option.text, { font: 'sink', size: 24 }),
+      text(option.text, { font: 'sink', size: 16 }),
       {
         choose() {
           option.effect();

@@ -14,6 +14,14 @@ export default function loadSprites() {
       x: 2,
       y: 19,
     },
+    barracks: {
+      x: 0,
+      y: 19,
+    },
+    soldier: {
+      x: 28,
+      y: 0,
+    },
   };
 
   loadSpriteAtlas(
