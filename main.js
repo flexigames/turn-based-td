@@ -11,12 +11,12 @@ import {
 import { createChoices } from './src/choice';
 import { spawnEnemy } from './src/enemy';
 import { addGrid } from './src/grid';
-import { getPlayer } from './src/helpers';
 import createMenu from './src/menu';
 import createPath from './src/path';
 import createPlayer from './src/player';
 import loadSprites from './src/spritesheet';
 import createTower from './src/tower';
+import { generatePathPoints } from './src/path';
 
 export const GRID_OFFSET_Y = 96;
 export const TOTAL_GRID_SIZE = CELL_SIZE * CELL_COUNT;
@@ -36,11 +36,7 @@ createMenu();
 
 createPlayer();
 
-const possiblePaths = [
-  [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)],
-  [vec2(14, 12), vec2(14, 10), vec2(10, 10), vec2(10, 7), vec2(7, 7)],
-  [vec2(3, 14), vec2(7, 14), vec2(7, 8), vec2(7, 7)],
-];
+const possiblePaths = [generatePathPoints()];
 
 const pathIndices = [sample(possiblePaths.map((_, i) => i))];
 
@@ -166,4 +162,4 @@ export function changeState(newState) {
   state = newState;
 }
 
-createChoices();
+// createChoices();

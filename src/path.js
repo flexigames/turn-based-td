@@ -1,4 +1,5 @@
-import { cellPos, CELL_SIZE } from './cell';
+import { sample, times } from 'lodash';
+import { cellPos, CELL_COUNT, CELL_SIZE, getRandomBorderCell } from './cell';
 
 export default function createPath(path) {
   for (let i = 0; i < path.length - 1; i++) {
@@ -37,4 +38,38 @@ function addPathObject(x, y) {
     z(-100),
     color(rgb(50, 50, 50)),
   ]);
+}
+
+export function generatePathPoints() {
+  const pathPoints = [getRandomBorderCell()];
+  let direction = Math.random() > 0.5 ? 'x' : 'y';
+  for (let index = 0; index < 5; index++) {
+    console.log(pathPoints);
+    if (direction === 'x') {
+      pathPoints.push(
+        vec2(
+          sample(
+            times(CELL_COUNT).filter(
+              (i) => ![6, 7, 8, pathPoints[index].x].includes(i)
+            )
+          ),
+          pathPoints[index].y
+        )
+      );
+      direction = 'y';
+    } else {
+      pathPoints.push(
+        vec2(
+          pathPoints[index].x,
+          sample(
+            times(CELL_COUNT).filter(
+              (i) => ![6, 7, 8, pathPoints[index].y].includes(i)
+            )
+          )
+        )
+      );
+      direction = 'x';
+    }
+  }
+  return pathPoints;
 }
