@@ -10,6 +10,10 @@ export default function loadSprites() {
       x: 27,
       y: 0,
     },
+    brute: {
+      x: 25,
+      y: 9
+    },
     tower: {
       x: 2,
       y: 19,

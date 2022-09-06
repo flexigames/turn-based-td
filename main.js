@@ -52,6 +52,7 @@ const game = add([
 ]);
 
 const spawnRate = 2;
+const bruteSpawnRate = 4;
 
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
@@ -66,11 +67,23 @@ function endTurn() {
   } else {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('friendly').forEach((o) => (o.turnTaken = false));
-    if (game.turn % spawnRate === 0) {
-      spawnEnemy(path1[0], path1);
-      spawnEnemy(path2[0], path2);
-    }
+    spawnEnemies();
     game.turn++;
+  }
+}
+
+function spawnEnemies() {
+  if (game.turn > 10 && game.turn % 4 === 0) {
+    spawnEnemy(path1[0], path1, {
+      initialHealth: 6,
+      damage: 2,
+      sprite: 'brute',
+    });
+    return;
+  }
+  if (game.turn % spawnRate === 0) {
+    spawnEnemy(path1[0], path1);
+    spawnEnemy(path2[0], path2);
   }
 }
 

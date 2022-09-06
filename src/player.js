@@ -15,7 +15,7 @@ export default function createPlayer() {
       xp: 0,
       levelCap: 3,
       takeDamage(damage = 1) {
-        shake(damage);
+        shake(damage * 10);
         this.hurt(damage);
 
         if (this.hp() <= 0) console.log('game over');
@@ -29,7 +29,7 @@ export default function createPlayer() {
       },
       levelUp() {
         this.xp = 0;
-        this.levelCap *= 2
+        this.levelCap *= 2;
         createChoices();
       },
     },

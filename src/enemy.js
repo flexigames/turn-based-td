@@ -7,18 +7,23 @@ import {
 } from './cell';
 import { getPlayer } from './helpers';
 
-export function spawnEnemy(cell, path) {
+export function spawnEnemy(
+  cell,
+  path,
+  { initialHealth = 2, damage = 1, sprite = 'enemy' } = {}
+) {
   const { x, y } = cell;
   return add([
     'enemy',
-    cellSprite('enemy'),
+    cellSprite(sprite),
     cellPos(x, y),
-    health(2),
+    health(initialHealth),
     {
       turnTaken: false,
       endTurnCb: null,
       path,
       nextPathStep: 1,
+      damage,
       moveToCell(x, y) {
         if (isCellOccupied(get('enemy'), x, y)) return;
 
@@ -28,12 +33,12 @@ export function spawnEnemy(cell, path) {
         this.turnTaken = true;
         this.endTurnCb = endTurnCb;
 
-        const attackableFriendly = get(['friendly', 'attackable']).filter((friendly) =>
-          isInRange(this.cell, friendly.cell, 1)
+        const attackableFriendly = get(['friendly', 'attackable']).filter(
+          (friendly) => isInRange(this.cell, friendly.cell, 1)
         )?.[0];
 
         if (attackableFriendly) {
-          attackableFriendly.takeDamage();
+          attackableFriendly.takeDamage(this.damage);
           return;
         }
 
