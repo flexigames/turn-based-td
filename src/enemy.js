@@ -75,7 +75,7 @@ export function spawnEnemy(cell, path) {
         if (moveAnmationFinished) {
           this.endTurn();
         }
-        this.moveTo(cellPosToPixel(vec2(this.cell.x, this.cell.y)), 400);
+        this.moveTo(cellPosToPixel(vec2(this.cell.x, this.cell.y)));
       },
     },
   ]);

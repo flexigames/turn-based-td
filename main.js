@@ -34,9 +34,17 @@ createMenu();
 
 createPlayer();
 
-const path = [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)];
-createPath(path);
-spawnEnemy(path[0], path);
+const path1 = [vec2(0, 0), vec2(0, 4), vec2(7, 4), vec2(7, 7)];
+const path2 = [
+  vec2(14, 12),
+  vec2(14, 10),
+  vec2(10, 10),
+  vec2(10, 7),
+  vec2(7, 7),
+];
+createPath(path1);
+createPath(path2);
+spawnEnemy(path1[0], path1);
 
 function endTurn() {
   const nextEnemies = get('enemy').filter((enemy) => !enemy.turnTaken);
@@ -53,7 +61,8 @@ function endTurn() {
     get('enemy').forEach((o) => (o.turnTaken = false));
     get('player').forEach((o) => (o.turnTaken = false));
     get('tower').forEach((o) => (o.turnTaken = false));
-    spawnEnemy(path[0], path);
+    spawnEnemy(path1[0], path1);
+    spawnEnemy(path2[0], path2);
   }
 }
 
