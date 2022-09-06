@@ -5,6 +5,8 @@ import { attackEnemies } from './helpers';
 export default function createPlayer() {
   const player = add([
     'player',
+    'friendly',
+    'attackable',
     cellSprite('base'),
     cellPos(7, 7),
     health(10),

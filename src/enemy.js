@@ -1,4 +1,10 @@
-import { cellPos, cellPosToPixel, cellSprite, isCellOccupied } from './cell';
+import {
+  cellPos,
+  cellPosToPixel,
+  cellSprite,
+  isCellOccupied,
+  isInRange,
+} from './cell';
 import { getPlayer } from './helpers';
 
 export function spawnEnemy(cell, path) {
@@ -21,14 +27,13 @@ export function spawnEnemy(cell, path) {
       takeTurn(endTurnCb) {
         this.turnTaken = true;
         this.endTurnCb = endTurnCb;
-        const player = getPlayer();
-        const { x: playerX, y: playerY } = player.cell;
 
-        const distanceX = this.cell.x - playerX;
-        const distanceY = this.cell.y - playerY;
+        const attackableFriendly = get(['friendly', 'attackable']).filter((friendly) =>
+          isInRange(this.cell, friendly.cell, 1)
+        )?.[0];
 
-        if (Math.abs(distanceX) + Math.abs(distanceY) === 1) {
-          player.takeDamage();
+        if (attackableFriendly) {
+          attackableFriendly.takeDamage();
           return;
         }
 
